@@ -1,0 +1,29 @@
+version: "2"
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: container-build/web/Dockerfile
+    environment:
+      VIRTUAL_HOST: todo-board.local
+    container_name: PRSERVER
+    ports:
+      - 8082:80
+    volumes:
+      - .:/var/www/
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: secretboard
+      MYSQL_USER: laravel_app2
+      MYSQL_PASSWORD: secretboard
+      MYSQL_DATABASE: todo_board
+      SERVICE_NAME: mysql
+    container_name: PRDBSERVER
+    volumes:
+      - ./shared/mysql_data:/var/lib/mysql
